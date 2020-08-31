@@ -1,0 +1,1 @@
+[{"input":"3 3 4\n","output":"YES\n2\n2 R\n2 L\n"},{"input":"3 3 1000000000\n","output":"NO\n"},{"input":"3 3 8\n","output":"YES\n3\n2 R\n2 D\n1 LLRR\n"},{"input":"4 4 9\n","output":"YES\n1\n3 RLD\n"},{"input":"3 4 16\n","output":"YES\n8\n3 R\n3 L\n1 D\n3 R\n1 D\n1 U\n3 L\n1 D\n"}]

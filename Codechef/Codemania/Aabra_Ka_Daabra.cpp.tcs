@@ -1,0 +1,1 @@
+[{"input":"6\n   abaabb","output":"0"},{"input":"7\nbabaabb","output":"1"},{"input":"16\nbbbbaaaabbbaaa","output":"10"}]

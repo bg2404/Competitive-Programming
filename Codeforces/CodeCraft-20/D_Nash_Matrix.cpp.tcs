@@ -1,0 +1,1 @@
+[{"input":"2\n1 1 1 1\n2 2 2 2\n","output":"VALID\nXL\nRX\n"},{"input":"3\n-1 -1 -1 -1 -1 -1\n-1 -1 2 2 -1 -1\n-1 -1 -1 -1 -1 -1\n","output":"VALID\nRRD\nUXD\nULL\n"}]

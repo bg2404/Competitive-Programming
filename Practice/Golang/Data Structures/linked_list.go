@@ -15,8 +15,8 @@ type linkedList struct {
 }
 
 func (l *linkedList) prepend(i int) {
-	newNode := &node{data:i}
-	if(l == nil || l.head == nil) {
+	newNode := &node{data: i}
+	if l == nil || l.head == nil {
 		l.head = newNode
 	} else {
 		newNode.next = l.head
@@ -27,7 +27,7 @@ func (l *linkedList) prepend(i int) {
 func (l *linkedList) deleteByValue(i int) {
 	if l != nil && l.head != nil {
 		if l.head.data == i {
-			 l.head = l.head.next
+			l.head = l.head.next
 		} else {
 			prev := l.head
 			for prev.next != nil {

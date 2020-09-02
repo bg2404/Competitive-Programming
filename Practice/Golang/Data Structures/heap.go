@@ -6,7 +6,7 @@ import (
 )
 
 type heap struct {
-	arr []int
+	arr  []int
 	size int
 }
 
@@ -25,7 +25,7 @@ func (h *heap) minHeapify(root int) {
 		minIdx = l
 	}
 	if r < h.size && h.arr[r] < h.arr[minIdx] {
-		minIdx = r;
+		minIdx = r
 	}
 	if minIdx != root {
 		h.arr[root], h.arr[minIdx] = h.arr[minIdx], h.arr[root]
@@ -42,7 +42,7 @@ func (h heap) getMin() (int, error) {
 
 func (h *heap) extractMin() (int, error) {
 	ret, err := h.getMin()
-	if(err != nil) {
+	if err != nil {
 		return ret, err
 	}
 	h.size--
@@ -69,5 +69,5 @@ func main() {
 	fmt.Println(h.arr)
 	fmt.Println(h.extractMin())
 	fmt.Println(h.arr)
-	fmt.Println(h.extractMin())	
+	fmt.Println(h.extractMin())
 }

@@ -91,7 +91,7 @@ func main() {
 		} else {
 			var l, r int
 			fmt.Scanf("%d %d", &l, &r)
-			fmt.Println(querySegmentTree(0, 0, sizeSegmentTree - 1, l, r))
+			fmt.Println(querySegmentTree(0, 0, sizeSegmentTree-1, l, r))
 		}
 
 	}

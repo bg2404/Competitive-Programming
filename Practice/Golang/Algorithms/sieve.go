@@ -5,7 +5,7 @@ import "fmt"
 var isPrime []bool
 
 func sieve(n int) {
-	isPrime = make([]bool, n + 1)
+	isPrime = make([]bool, n+1)
 	for i := range isPrime {
 		isPrime[i] = true
 	}

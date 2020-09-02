@@ -25,7 +25,7 @@ func bfs(u, p int) {
 	q = append(q, u)
 	vis[u] = true
 	for len(q) > 0 {
-		fmt.Printf("%d ", q[0]);
+		fmt.Printf("%d ", q[0])
 		for _, v := range adj[q[0]] {
 			if !vis[v] {
 				q = append(q, v)

@@ -27,7 +27,7 @@ func quickSort(a []int) {
 		return
 	}
 
-	left, right := 0, len(a) - 1
+	left, right := 0, len(a)-1
 	pivot := rand.Intn(right + 1)
 
 	a[right], a[pivot] = a[pivot], a[right]

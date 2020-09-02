@@ -6,7 +6,7 @@ import (
 )
 
 func binarySearch(arr []int, k int) bool {
-	l, r, m := 0, len(arr) - 1, 0
+	l, r, m := 0, len(arr)-1, 0
 	for l <= r {
 		m = (l + r) / 2
 		if arr[m] < k {
@@ -17,7 +17,7 @@ func binarySearch(arr []int, k int) bool {
 			return true
 		}
 	}
-	return false	
+	return false
 }
 
 func main() {

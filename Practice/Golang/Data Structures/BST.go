@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 type node struct {
-	key int
-	left *node
+	key   int
+	left  *node
 	right *node
 }
 
@@ -13,7 +13,7 @@ type tree struct {
 }
 
 func (t *tree) insertKey(i int) {
-	newNode := &node{key:i}
+	newNode := &node{key: i}
 	if t.root == nil {
 		t.root = newNode
 	} else {
@@ -52,7 +52,7 @@ func (t tree) searchKey(i int) {
 			cur = cur.right
 		} else {
 			fmt.Println("Found")
-			break;
+			break
 		}
 	}
 }

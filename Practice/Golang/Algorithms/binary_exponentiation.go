@@ -8,7 +8,7 @@ func binPowMod(a, n int) int {
 	a %= mod
 	ret := 1
 	for n > 0 {
-		if n & 1 == 1 {
+		if n&1 == 1 {
 			ret = (ret * a) % mod
 		}
 		a = (a * a) % mod

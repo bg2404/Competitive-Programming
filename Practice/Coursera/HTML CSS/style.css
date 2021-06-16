@@ -1,0 +1,22 @@
+h1 {
+    color: #485550;
+    font: Bold 50px Segoe UI;
+}
+
+h2 {
+    color: #485550;
+    font: Bold 35px Segue UI;
+}
+
+th {
+    color: #485550;
+    font: Regular 15px Segoe UI;
+}
+
+body {
+    font: Regular 12px Segoe UI;    
+}
+
+#foodOL {
+    color: dodgerblue;
+}

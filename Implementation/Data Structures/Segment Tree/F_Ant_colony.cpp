@@ -75,10 +75,6 @@ SegmentTree<T>::SegmentTree(vector<T> v, struct node<T> (*query)(struct node<T> 
     MAX = (int)pow(2, 1 + ceil(log2(v.size())));
     tree.resize(MAX);
     constructSegmentTree(0, 0, v.size()-1);
-
-    // for(auto u: tree) {
-    //     cout << u.v << ' ' << u.c << '\n';
-    // }
 }
 
 template<typename T>

@@ -86,7 +86,7 @@ void solve(){
         }
         cout << '\n';
     }
-
+    
 }
 
 int main(){

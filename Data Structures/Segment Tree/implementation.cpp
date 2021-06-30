@@ -4,122 +4,112 @@
 
 using namespace std;
 
-template<typename T>
 struct node {
-    /*
-        v = velue at node
-    */
-    T v;
+    int v;
 };
 
-
-template<typename T>
+// MAX SEGMENT TREE
 class SegmentTree {
-    private:
-        int MAX;
-        vector<struct node<T>> tree;
-        struct node<T> nullNode;
-        vector<T> arr;
-        T (*query)(struct node<T>, struct node<T>);
-        void constructSegmentTree(int root, int l, int r);
-        void update(int root, int x, int y, int index, T v);
-        struct node<T> queryRange(int root, int x, int y, int l, int r);
-    public:
-        SegmentTree(vector<T> v, T (*query)(struct node<T> a, struct node<T> b));
-        void update(int index, T v);
-        T queryRange(int l, int r);
-};
+    vector<struct node> tree;
+    vector<int> arr;
+    struct node nullNode;
+    int SIZE;
 
-template<typename T>
-SegmentTree<T>::SegmentTree(vector<T> v, T (*query)(struct node<T> a, struct node<T> b)) {
-    this->query = query;
-    this->arr = v;
-    MAX = (int)pow(2, 1 + ceil(log2(v.size())));
-    tree.resize(MAX);
-    constructSegmentTree(0, 0, v.size()-1);
-}
-
-template<typename T>
-void SegmentTree<T>::constructSegmentTree(int root, int l, int r) {
-    if(l == r) {
-        tree[root].v = arr[l];
-        return;
+    struct node single(int v) {
+        return {v};
     }
-
-    constructSegmentTree(root*2+1, l, l + (r-l)/2);
-    constructSegmentTree(root*2+2, l+(r-l)/2 + 1, r);
-
-    tree[root].v = query(tree[root*2+1], tree[root*2+2]);
-}
-
-template<typename T>
-void SegmentTree<T>::update(int index, T v) {
-    update(0, 0, arr.size()-1, index, v);
-}
-
-template<typename T>
-void SegmentTree<T>::update(int root, int x, int y, int index, T v) {
-    if(x > y) {
-        return;
+    struct node merge(struct node a, struct node b) {
+        return { max(a.v, b.v) };
     }
-    if(x == y) {
-        if(x == index) {
-            tree[root].v = v;
+    void buildTree(int root, int x, int y) {
+        if(x == y) {
+            if(x < arr.size()) {
+                tree[root] = single(arr[x]);
+            }
+        } else {
+            int m = x + y >> 1;
+            buildTree((root<<1)|1, x, m);
+            buildTree((root<<1)+2, m+1, y);
+            tree[root] = merge(tree[(root<<1)|1], tree[(root<<1)+2]);
         }
-        return;
     }
+    void update(int root, int x, int y, int idx, int v) {
+        if(x == y) {
+            if(x == idx) {
+                tree[root] = single(v);
+            }
+        } else {
+            int m = x + y >> 1;
 
-    int mid = x + (y-x)/2;
-
-    if(mid >= index) {
-        update(root*2+1, x, mid, index, v);
-    } else {
-        update(root*2+2, mid+1, y, index, v);
+            if(idx > m) {
+                update((root<<1)+2, m+1, y, idx, v);
+            } else {
+                update((root<<1)|1, x, m, idx, v);
+            }
+            tree[root] = merge(tree[(root<<1)|1], tree[(root<<1)+2]);
+        }
     }
-
-    tree[root].v = query(tree[root*2+1], tree[root*2+2]);
-}
-
-template<typename T>
-T SegmentTree<T>::queryRange(int l, int r) {
-    return queryRange(0, 0, arr.size()-1, l, r).v;
-}
-
-template<typename T>
-struct node<T> SegmentTree<T>::queryRange(int root, int x, int y, int l, int r) {
-    if(x > r || y < l) {
-        return nullNode;
+    struct node query(int root, int x, int y, int l, int r) {
+        if(y < l || r < x) {
+            return nullNode;
+        }
+        if(x >= l && y <= r) {
+            return tree[root];
+        }
+        int m = x + y >> 1;
+        return merge(query(root<<1|1, x, m, l, r), query((root<<1)+2, m+1, y, l, r));
     }
-
-    if(x >= l && y <= r) {
-        return tree[root];
+    int firstGreater(int root, int x, int y, int v, int l) {
+        if(y < l) {
+            return -1;
+        }
+        if(x == y) {
+            if(x < arr.size() && tree[root].v >= v) {
+                return x;
+            }
+            return -1;
+        }
+        if(tree[root].v < v) {
+            return -1;
+        }
+        int m = x + y >> 1;
+        int left = firstGreater((root<<1)|1, x, m, v, l);
+        if(left >= 0) {
+            return left;
+        }
+        return firstGreater((root<<1)+2, m + 1, y, v, l);
     }
-
-    int mid = x + (y-x) / 2;
-
-    struct node<T> left = queryRange(root*2+1, x, mid, l, r), right = queryRange(root*2+2, mid+1, y, l, r), tempNode;
-    tempNode.v = query(left, right);
-    return tempNode;
-}
-
-// some associative and commutative query function
-template<typename T>
-T query(struct node<T> a, struct node<T> b) {
-    T v;
-    // Sum Query
-    v = a.v + b.v;
-
-    // Min Query
-    v = min(a.v, b.v);
-
-    // Max Query
-    v = max(a.v, b.v);
-
-    return v;
-}
+public:
+    SegmentTree(vector<int> arr) {
+        this->arr = arr;
+        SIZE = pow(2, 1 + floor(log2(arr.size())));
+        nullNode = {INT_MIN};
+        tree = vector<struct node> (SIZE*2 - 1, nullNode);
+        buildTree(0, 0, SIZE - 1);
+    }
+    // Set arr[idx] = v
+    void update(int idx, int v) {
+        update(0, 0, SIZE - 1, idx, v);
+    }
+    // MAX (arr[l], ..., arr[r])
+    int query(int l, int r) {
+        return query(0, 0, SIZE - 1, l, r).v;
+    }
+    // MIN j such that (j >= l and arr[j] >= v)
+    int firstGreater(int v, int l) {
+        return firstGreater(0, 0, SIZE - 1, v, l);
+    }
+    // Print the Segment Tree
+    void print() {
+        for(auto x: tree) {
+            cout << x.v << ' ';
+        }
+        cout << endl;
+    }
+};
 
 int main() {
-    int n, m, q, l, r;
+    int n, m, q, l, r, idx, v;
     cin >> n >> m;
 
     vector<int> a(n);
@@ -127,16 +117,18 @@ int main() {
         cin >> a[i];
     }
 
-    SegmentTree<int> st(a, query);
-    
+    SegmentTree st(a);
+
     for(int i = 0; i < m; ++i) {
-        cin >> q >> l >> r;
+        cin >> q ;
         if(q == 1) {
-            st.update(l-1, r);
+            cin >> idx >> v;
+            st.update(idx - 1, v);
         } else {
-            cout << st.queryRange(l-1, r-1) << '\n';
+            cin >> l >> r;
+            cout << st.query(l-1, r-1) << '\n';
         }
     }
-    
+
     return 0;
 }

@@ -30,7 +30,7 @@ void topological_sort(int n) {
 bool is_cyclic_util(int v) {
     color[v] = 1;
     for(auto u: adj[v]) {
-        if(color[v] == 1 || (!color[v] && is_cyclic_util(v))) {
+        if(color[u] == 1 || (!color[u] && is_cyclic_util(u))) {
             return true;
         }
     }
@@ -70,4 +70,4 @@ int main() {
     }
     cout << '\n';
     return 0;
-} 
+}

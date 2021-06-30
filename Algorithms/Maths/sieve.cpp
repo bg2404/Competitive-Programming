@@ -43,31 +43,50 @@ const ll maxn = 1e5;
 const ll inf = 1e9;
 const double pi = acos(-1);
 
-V<bool> prime;
+V<bool> is_prime;
 
 void sieve(int n) {
-    prime = V<bool>(n+1,true);
-    prime[0] = prime[1] = false;
+    is_prime = V<bool>(n+1,true);
+    is_prime[0] = is_prime[1] = false;
     for(int p = 2; p*p <= n; ++p) {
-        if(prime[p]) {
+        if(is_prime[p]) {
             for(int i = p*p; i <= n; i += p) {
-                prime[i] = false;
+                is_prime[i] = false;
             }
         }
     }
 }
 
+// This implementation is O(n).
+// It also provides a list of prime and factorization for numbers in range [1, n]
+V<int> lp;
+V<int> prime;
+
+void sieve2(int n) {
+    lp.assign(lp.size(), 0);
+    lp[1] = 1;
+    for(int i = 2; i <= n; ++i) {
+        if(lp[i] == 0) {
+            lp[i] = i;
+            prime.push_back(i);
+        }
+        for(int j = 0; j < prime.size() && pr[j] <= lp[i] && i*pr[j] <= n; ++j) {
+            lp[i*pr[j]] = pr[j];
+        }
+    }
+}
+
 int main(){
-   sieve(maxn);
-   for(int i = 0; i < 10; ++i) {
-       for(int j = 1; j < 11; ++j) {
-           if(prime[i*10+j]) {
-               cout << 'O' << ' ';
-           } else {
-               cout << 'X' << ' ';
-           }
-       }
-       cout << '\n';
-   }
-   return 0;
+    sieve(maxn);
+    for(int i = 0; i < 10; ++i) {
+        for(int j = 1; j < 11; ++j) {
+            if(is_prime[i*10+j]) {
+                cout << 'O' << ' ';
+            } else {
+                cout << 'X' << ' ';
+            }
+        }
+        cout << '\n';
+    }
+    return 0;
 }
